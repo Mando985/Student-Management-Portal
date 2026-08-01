@@ -9,14 +9,14 @@ export function SiteHeader({ actions }: { actions?: ReactNode }) {
       <div className="container-page flex h-16 items-center justify-between gap-4">
         <Link
           href="/"
-          className="flex items-center gap-2.5 font-display text-[15px] font-bold tracking-tight text-foreground transition-opacity hover:opacity-80"
+          className="flex min-w-0 items-center gap-2.5 font-display text-[15px] font-bold tracking-tight text-foreground transition-opacity hover:opacity-80"
         >
-          <span className="grid size-9 place-items-center rounded-lg bg-primary text-primary-foreground shadow-card">
+          <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground shadow-card">
             <GraduationCapIcon className="size-5" />
           </span>
-          Student Management Portal
+          <span className="truncate">Student Management Portal</span>
         </Link>
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           {actions}
           <ThemeToggle />
         </div>

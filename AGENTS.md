@@ -17,8 +17,8 @@ Student result-management app: a single-page homepage plus per-student detail/ed
 
 ## Data & setup
 
-- Requires `MONGODB_URI` in `.env` (already present). App connects via `@/lib/mongodb` `clientPromise` (global singleton in dev).
-- DB name `students`, collection `students`. Document shape: `name`, `branch`, `currentYear` (1–4), `academicYears` (4 years × 2 semesters each, ≤5 subjects, each with `internal1/internal2/final` marks).
+- Requires `MONGODB_URI` in `.env` (already present). App connects via `@/lib/mongodb` `clientPromise` (global singleton in dev); it reads `process.env.MONGODB_URI!`.
+- DB name `students`, collection `students`. Document shape: `name`, `branch`, `currentYear` (1–4), `academicYears` (4 years × 2 semesters each, numbered `(year-1)*2+i` = 1–8, ≤5 subjects, each with `internal1/internal2/final` marks).
 - The `Student` type is defined and exported from `app/students/[id]/student-tabs.tsx`; reuse it rather than redefining.
 
 ## Architecture
@@ -26,9 +26,15 @@ Student result-management app: a single-page homepage plus per-student detail/ed
 - Server actions live in `app/actions.ts` (`"use server"`). Mutations call `revalidatePath("/")`; `updateStudent` uses `refresh()` from `next/cache`.
 - `app/page.tsx` is a server component (`dynamic = "force-dynamic"`) that fetches students directly from Mongo.
 - Homepage interactivity (year filter, add/delete forms) is in client components under `app/` (`student-grid.tsx`, `add-student-form.tsx`, `delete-student-button.tsx`).
+- Charts: `recharts` + trimmed shadcn-style primitives in `components/ui/area-charts-2.tsx`, consumed by `app/students/[id]/semester-chart.tsx`. Chart colors come from each config's `color` → `--color-<key>` CSS vars. These primitives are deliberately trimmed to this app's usage — re-add features rather than expecting full shadcn.
 - Path alias `@/*` → project root.
+
+## Styling
+
+- Design tokens live in `app/globals.css` (Tailwind v4 CSS vars: `--surface`, `--surface-2`, `--chart-1..3`, `--chart-grid`, etc.).
+- `design-system/campus-results/MASTER.md` (+ optional `pages/<name>.md` overrides) is the generated design reference for this product; check it before styling new pages.
 
 ## Gotchas
 
 - **Never pass Mongo documents (with `ObjectId._id`) as props to client components** — Next errors: "Only plain objects can be passed to Client Components." Serialize first (e.g. `_id: s._id.toString()`).
-- Lint has a pre-existing error in `app/add-student-form.tsx` (`react-hooks/set-state-in-effect`, line ~28). It is unrelated to feature work; don't chase it unless asked.
+- Lint has a pre-existing error in `app/add-student-form.tsx` (`react-hooks/set-state-in-effect`, line ~35). It is unrelated to feature work; don't chase it unless asked.

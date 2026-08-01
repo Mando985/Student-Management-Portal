@@ -1,8 +1,21 @@
 "use client"
 
-import { useState } from "react"
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  Legend,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts"
+import {
+  ChartContainer,
+  ChartLegendContent,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/ui/area-charts-2"
 import { ChartBarIcon } from "@/app/components/icons"
-import { cn } from "@/lib/cn"
 
 type Subject = {
   subject: string
@@ -11,146 +24,95 @@ type Subject = {
   final: { marks: number }
 }
 
-type Semester = {
+export type Semester = {
   semester: number
   subjects: Subject[]
 }
 
-type ExamKey = "internal1" | "internal2" | "final"
-
-const W = 640
-const H = 300
-const PAD = { top: 20, right: 20, bottom: 60, left: 40 }
-const CHART_COLORS: Record<ExamKey, string> = {
-  internal1: "var(--chart-3)",
-  internal2: "var(--chart-1)",
-  final: "var(--chart-2)",
-}
-const EXAMS: { key: ExamKey; label: string }[] = [
-  { key: "internal1", label: "Internal 1" },
-  { key: "internal2", label: "Internal 2" },
-  { key: "final", label: "Final" },
-]
+const chartConfig = {
+  internal1: { label: "Internal 1", color: "var(--chart-3)" },
+  internal2: { label: "Internal 2", color: "var(--chart-1)" },
+  final: { label: "Final", color: "var(--chart-2)" },
+} satisfies ChartConfig
 
 function truncate(s: string, n: number) {
   return s.length > n ? s.slice(0, n - 1) + "…" : s
 }
 
-export function SemesterChart({ semesters }: { semesters: Semester[] }) {
-  const [semIdx, setSemIdx] = useState(0)
-  const sem = semesters[semIdx]
-  const subjects = sem?.subjects.filter((s) => s.subject.trim() !== "") ?? []
-
-  const plotW = W - PAD.left - PAD.right
-  const plotH = H - PAD.top - PAD.bottom
-  const n = subjects.length
-  const x = (i: number) =>
-    n === 1 ? PAD.left + plotW / 2 : PAD.left + (i / (n - 1)) * plotW
-  const y = (v: number) => PAD.top + plotH - (v / 100) * plotH
-
-  const axisText: React.CSSProperties = { fill: "var(--muted-foreground)" }
+export function SemesterChart({ semester }: { semester: Semester }) {
+  const data = semester.subjects
+    .filter((s) => s.subject.trim() !== "")
+    .map((s) => ({
+      subject: truncate(s.subject, 14),
+      internal1: s.internal1.marks,
+      internal2: s.internal2.marks,
+      final: s.final.marks,
+    }))
 
   return (
     <section className="mt-6 rounded-xl border border-border bg-surface p-5 shadow-card">
-      <header className="mb-4 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2.5">
-          <span className="grid size-8 place-items-center rounded-lg bg-secondary font-display text-sm font-bold text-secondary-foreground">
-            <ChartBarIcon className="size-4.5" />
-          </span>
-          <h3 className="font-display text-sm font-bold">Marks overview</h3>
-        </div>
-        <div className="flex items-center gap-1 rounded-lg border border-border bg-surface p-1">
-          {semesters.map((s, i) => (
-            <button
-              key={s.semester}
-              onClick={() => setSemIdx(i)}
-              className={cn(
-                "rounded-lg px-3 py-1 text-sm font-medium transition-colors",
-                i === semIdx
-                  ? "bg-primary text-primary-foreground shadow-card"
-                  : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"
-              )}
-            >
-              Sem {s.semester}
-            </button>
-          ))}
-        </div>
+      <header className="mb-4 flex items-center gap-2.5">
+        <span className="grid size-8 place-items-center rounded-lg bg-secondary font-display text-sm font-bold text-secondary-foreground">
+          <ChartBarIcon className="size-4.5" />
+        </span>
+        <h3 className="font-display text-sm font-bold">Marks overview</h3>
       </header>
 
-      {n === 0 ? (
+      {data.length === 0 ? (
         <p className="text-sm text-muted-foreground">No subjects to chart.</p>
       ) : (
-        <>
-          <svg viewBox={`0 0 ${W} ${H}`} className="w-full" aria-hidden="true">
-            {[0, 20, 40, 60, 80, 100].map((v) => (
-              <g key={v}>
-                <line
-                  x1={PAD.left}
-                  y1={y(v)}
-                  x2={W - PAD.right}
-                  y2={y(v)}
-                  style={{ stroke: "var(--chart-grid)" }}
-                />
-                <text
-                  x={PAD.left - 6}
-                  y={y(v) + 3}
-                  textAnchor="end"
-                  fontSize="10"
-                  style={axisText}
-                >
-                  {v}
-                </text>
-              </g>
-            ))}
-            {EXAMS.map(({ key, label }) => (
-              <g key={key}>
-                <polyline
-                  points={subjects
-                    .map((s, i) => `${x(i)},${y(s[key].marks)}`)
-                    .join(" ")}
-                  fill="none"
-                  stroke={CHART_COLORS[key]}
-                  strokeWidth={2}
-                />
-                {subjects.map((s, i) => (
-                  <circle
-                    key={`${label}-${i}`}
-                    cx={x(i)}
-                    cy={y(s[key].marks)}
-                    r={3}
-                    fill={CHART_COLORS[key]}
-                  />
-                ))}
-              </g>
-            ))}
-            {subjects.map((s, i) => (
-              <text
-                key={s.subject}
-                x={x(i)}
-                y={H - PAD.bottom + 14}
-                textAnchor="middle"
-                fontSize="10"
-                style={axisText}
-              >
-                {truncate(s.subject, 14)}
-              </text>
-            ))}
-          </svg>
-          <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm">
-            {EXAMS.map(({ key, label }) => (
-              <span
-                key={key}
-                className="flex items-center gap-1.5 text-muted-foreground"
-              >
-                <span
-                  className="inline-block size-2.5 rounded-full"
-                  style={{ backgroundColor: CHART_COLORS[key] }}
-                />
-                {label}
-              </span>
-            ))}
-          </div>
-        </>
+        <ChartContainer config={chartConfig} className="h-72 w-full">
+          <AreaChart
+            accessibilityLayer
+            data={data}
+            margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+          >
+            <CartesianGrid vertical={false} stroke="var(--chart-grid)" />
+            <XAxis
+              dataKey="subject"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={10}
+              tick={{ fontSize: 12 }}
+              interval={0}
+            />
+            <YAxis
+              domain={[0, 100]}
+              tickCount={6}
+              tickLine={false}
+              axisLine={false}
+              tickMargin={10}
+              width={36}
+              tick={{ fontSize: 12 }}
+            />
+            <Tooltip content={<ChartTooltipContent />} />
+            <Legend content={<ChartLegendContent />} />
+            <Area
+              dataKey="internal1"
+              type="natural"
+              fill="var(--color-internal1)"
+              fillOpacity={0.2}
+              stroke="var(--color-internal1)"
+              strokeWidth={2}
+            />
+            <Area
+              dataKey="internal2"
+              type="natural"
+              fill="var(--color-internal2)"
+              fillOpacity={0.2}
+              stroke="var(--color-internal2)"
+              strokeWidth={2}
+            />
+            <Area
+              dataKey="final"
+              type="natural"
+              fill="var(--color-final)"
+              fillOpacity={0.2}
+              stroke="var(--color-final)"
+              strokeWidth={2}
+            />
+          </AreaChart>
+        </ChartContainer>
       )}
     </section>
   )

@@ -35,7 +35,7 @@ export function StudentGrid({ students }: { students: Student[] }) {
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-1 rounded-lg border border-border bg-surface p-1 shadow-card">
+        <div className="flex flex-wrap items-center gap-1 rounded-lg border border-border bg-surface p-1 shadow-card">
           <button onClick={() => setYear(null)} className={pillCls(year === null)}>
             All
           </button>
