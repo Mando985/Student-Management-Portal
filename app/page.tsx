@@ -1,6 +1,7 @@
 import clientPromise from "@/lib/mongodb"
 import { AddStudentForm } from "./add-student-form"
 import { StudentGrid, type Student } from "./student-grid"
+import { SiteHeader } from "./components/site-header"
 
 export const dynamic = "force-dynamic"
 
@@ -20,14 +21,21 @@ export default async function Home() {
   }))
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="border-2 basis-1/5">
-        <p>Student Management Portal</p>
-      </div>
-      <div className="border-2 basis-4/5 overflow-auto p-4">
-        <AddStudentForm />
+    <>
+      <SiteHeader actions={<AddStudentForm />} />
+      <main className="container-page py-8 sm:py-10">
+        <section className="mb-8">
+          <p className="text-sm font-medium uppercase tracking-wide text-primary">
+            Academic Records
+          </p>
+          <h1 className="mt-1 text-2xl font-bold sm:text-3xl">Students</h1>
+          <p className="mt-2 max-w-prose text-sm text-muted-foreground sm:text-base">
+            View and manage academic results for every student across all
+            semesters.
+          </p>
+        </section>
         <StudentGrid students={students} />
-      </div>
-    </div>
+      </main>
+    </>
   )
 }

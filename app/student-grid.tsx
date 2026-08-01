@@ -3,6 +3,8 @@
 import { useState } from "react"
 import Link from "next/link"
 import { DeleteStudentButton } from "./delete-student-button"
+import { ArrowRightIcon } from "./components/icons"
+import { cn } from "@/lib/cn"
 
 type Student = {
   _id: string
@@ -13,55 +15,103 @@ type Student = {
 
 export type { Student }
 
+const YEARS = [1, 2, 3, 4]
+
+function initials(name: string) {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0].toUpperCase())
+    .join("")
+}
+
 export function StudentGrid({ students }: { students: Student[] }) {
   const [year, setYear] = useState<number | null>(null)
   const filtered = year
     ? students.filter((s) => s.currentYear === year)
     : students
 
+  const pillCls = (active: boolean) =>
+    cn(
+      "rounded-lg px-3.5 py-1.5 text-sm font-medium transition-colors",
+      active
+        ? "bg-primary text-primary-foreground shadow-card"
+        : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"
+    )
+
   return (
-    <>
-      <div className="flex gap-2 mt-4">
-        <button
-          onClick={() => setYear(null)}
-          className={`px-4 py-2 border-2 rounded ${
-            year === null ? "bg-green-600 text-white" : "bg-white"
-          }`}
-        >
-          All
-        </button>
-        {[1, 2, 3, 4].map((y) => (
-          <button
-            key={y}
-            onClick={() => setYear(y)}
-            className={`px-4 py-2 border-2 rounded ${
-              year === y ? "bg-green-600 text-white" : "bg-white"
-            }`}
-          >
-            Year {y}
+    <div>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-1 rounded-lg border border-border bg-surface p-1 shadow-card">
+          <button onClick={() => setYear(null)} className={pillCls(year === null)}>
+            All
           </button>
-        ))}
+          {YEARS.map((y) => (
+            <button key={y} onClick={() => setYear(y)} className={pillCls(year === y)}>
+              Year {y}
+            </button>
+          ))}
+        </div>
+        <p className="text-sm text-muted-foreground" aria-live="polite">
+          Showing {filtered.length} of {students.length} student
+          {students.length === 1 ? "" : "s"}
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-        {filtered.map((s) => (
-          <div key={s._id} className="relative">
-            <Link
-              href={`/students/${s._id}`}
-              className="border-2 rounded p-4 block hover:shadow-md"
+      {filtered.length === 0 ? (
+        <div className="mt-6 flex flex-col items-center gap-2 rounded-xl border border-dashed border-border bg-surface px-6 py-16 text-center">
+          <span className="grid size-12 place-items-center rounded-full bg-secondary text-secondary-foreground">
+            <ArrowRightIcon className="size-6 -scale-x-100" />
+          </span>
+          <p className="font-display font-semibold">No students here yet</p>
+          <p className="text-sm text-muted-foreground">
+            {year
+              ? `No students are currently in Year ${year}.`
+              : "Add a student to start tracking results."}
+          </p>
+        </div>
+      ) : (
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {filtered.map((s) => (
+            <div
+              key={s._id}
+              className="group relative flex flex-col gap-4 rounded-xl border border-border bg-surface p-5 shadow-card transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-card-hover"
             >
-              <h2 className="text-lg font-semibold">{s.name}</h2>
-              <p>{s.branch}</p>
-              <p>Year {s.currentYear}</p>
-            </Link>
-            <DeleteStudentButton id={s._id} />
-          </div>
-        ))}
-      </div>
-
-      {filtered.length === 0 && (
-        <p className="mt-4 text-gray-500">No students in this year.</p>
+              <Link
+                href={`/students/${s._id}`}
+                aria-label={`View results for ${s.name}`}
+                className="absolute inset-0 z-10 rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              >
+                <span className="sr-only">{s.name}</span>
+              </Link>
+              <div className="flex items-start justify-between gap-2">
+                <span className="grid size-10 place-items-center rounded-lg bg-secondary font-display text-sm font-bold text-secondary-foreground">
+                  {initials(s.name)}
+                </span>
+                <DeleteStudentButton id={s._id} className="relative z-20" />
+              </div>
+              <div className="min-w-0">
+                <h2 className="truncate font-display text-base font-bold text-foreground">
+                  {s.name}
+                </h2>
+                <p className="mt-0.5 truncate text-sm text-muted-foreground">
+                  {s.branch}
+                </p>
+              </div>
+              <div className="mt-auto flex items-center justify-between">
+                <span className="rounded-full border border-border bg-muted px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
+                  Year {s.currentYear}
+                </span>
+                <span className="inline-flex items-center gap-1 text-sm font-medium text-primary">
+                  Results
+                  <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
       )}
-    </>
+    </div>
   )
 }
