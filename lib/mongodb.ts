@@ -1,23 +1,27 @@
 import { MongoClient } from "mongodb"
 
-const uri = process.env.MONGODB_URI!
+const uri = process.env.MONGODB_URI
 const options = {}
 
-let client: MongoClient
+function createClient(): Promise<MongoClient> {
+  if (!uri) {
+    return Promise.reject(
+      new Error("MONGODB_URI is not set. Add it to your .env file.")
+    )
+  }
+  return new MongoClient(uri, options).connect()
+}
+
 let clientPromise: Promise<MongoClient>
 
 if (process.env.NODE_ENV === "development") {
   const globalWithMongo = globalThis as typeof globalThis & {
     _mongoClientPromise?: Promise<MongoClient>
   }
-  if (!globalWithMongo._mongoClientPromise) {
-    client = new MongoClient(uri, options)
-    globalWithMongo._mongoClientPromise = client.connect()
-  }
-  clientPromise = globalWithMongo._mongoClientPromise
+  clientPromise = globalWithMongo._mongoClientPromise ?? createClient()
+  globalWithMongo._mongoClientPromise = clientPromise
 } else {
-  client = new MongoClient(uri, options)
-  clientPromise = client.connect()
+  clientPromise = createClient()
 }
 
 export default clientPromise
