@@ -18,7 +18,28 @@ export default async function StudentPage({
     .collection<Student>("students")
     .findOne({ _id: new ObjectId(id) })
 
-  if (!student) return <p>Student not found.</p>
+  if (!student) {
+    return (
+      <>
+        <SiteHeader />
+        <main className="container-page py-8 sm:py-10">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <ArrowLeftIcon className="size-4" />
+            All students
+          </Link>
+          <div className="mt-8 flex flex-col items-center gap-2 rounded-xl border border-dashed border-border bg-surface px-6 py-16 text-center">
+            <p className="font-display font-semibold">Student not found</p>
+            <p className="text-sm text-muted-foreground">
+              This student may have been removed.
+            </p>
+          </div>
+        </main>
+      </>
+    )
+  }
 
   const data: Student = {
     name: student.name,
