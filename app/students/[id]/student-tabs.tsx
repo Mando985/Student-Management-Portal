@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { updateStudent } from "@/app/actions"
+import { SemesterChart } from "./semester-chart"
 
 export type Student = {
   name: string
@@ -213,6 +214,8 @@ export function StudentTabs({ student, id }: { student: Student; id: string }) {
           )}
         </div>
       ))}
+
+      {!editing && active && <SemesterChart semesters={active.semesters} />}
     </>
   )
 }

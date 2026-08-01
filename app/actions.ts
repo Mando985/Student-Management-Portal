@@ -41,6 +41,18 @@ export async function addStudent(
   return { success: true }
 }
 
+export async function deleteStudent(id: string) {
+  if (!ObjectId.isValid(id)) return
+
+  const client = await clientPromise
+  await client
+    .db("students")
+    .collection("students")
+    .deleteOne({ _id: new ObjectId(id) })
+
+  revalidatePath("/")
+}
+
 export async function updateStudent(id: string, data: Student) {
   if (!ObjectId.isValid(id) || !Array.isArray(data?.academicYears)) {
     throw new Error("Invalid student data")
