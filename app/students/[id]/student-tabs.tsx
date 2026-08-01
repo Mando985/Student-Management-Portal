@@ -3,6 +3,8 @@
 import { useState } from "react"
 import { updateStudent } from "@/app/actions"
 import { SemesterChart } from "./semester-chart"
+import { PencilIcon } from "@/app/components/icons"
+import { cn } from "@/lib/cn"
 
 export type Student = {
   name: string
@@ -24,8 +26,8 @@ export type Student = {
 
 type Exam = "internal1" | "internal2" | "final"
 
-const inputCls = "border-2 rounded px-1"
-const btnCls = "px-4 py-1 border-2 rounded"
+const inputCls =
+  "rounded-lg border border-border bg-surface px-2 py-1 text-sm text-foreground transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/40"
 const MAX_SUBJECTS = 5
 const blankSubject = {
   subject: "",
@@ -33,6 +35,14 @@ const blankSubject = {
   internal2: { marks: 0 },
   final: { marks: 0 },
 }
+
+const pillCls = (active: boolean) =>
+  cn(
+    "rounded-lg px-3.5 py-1.5 text-sm font-medium transition-colors",
+    active
+      ? "bg-primary text-primary-foreground shadow-card"
+      : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"
+  )
 
 function padToFive(s: Student): Student {
   return {
@@ -108,114 +118,147 @@ export function StudentTabs({ student, id }: { student: Student; id: string }) {
   }
 
   return (
-    <>
-      <div className="absolute top-6 right-6 flex gap-2">
-        {editing ? (
-          <>
+    <div className="mt-8">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-1 rounded-lg border border-border bg-surface p-1 shadow-card">
+          {draft.academicYears.map((year) => (
             <button
-              onClick={handleSave}
-              disabled={saving}
-              className={`${btnCls} bg-green-600 text-white disabled:opacity-50`}
+              key={year.year}
+              onClick={() => setActiveYear(year.year)}
+              className={pillCls(year.year === activeYear)}
             >
-              {saving ? "Saving..." : "Save"}
+              Year {year.year}
             </button>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-2">
+          {editing ? (
+            <>
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-card transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {saving ? "Saving..." : "Save"}
+              </button>
+              <button
+                onClick={() => {
+                  setDraft(student)
+                  setEditing(false)
+                }}
+                className="rounded-lg border border-border bg-surface px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-surface-2"
+              >
+                Cancel
+              </button>
+            </>
+          ) : (
             <button
               onClick={() => {
-                setDraft(student)
-                setEditing(false)
+                setDraft(padToFive(student))
+                setEditing(true)
               }}
-              className={`${btnCls} bg-white`}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface px-4 py-2 text-sm font-medium text-foreground shadow-card transition-colors hover:bg-surface-2"
             >
-              Cancel
+              <PencilIcon className="size-4" />
+              Edit marks
             </button>
-          </>
-        ) : (
-          <button
-            onClick={() => {
-              setDraft(padToFive(student))
-              setEditing(true)
-            }}
-            className={`${btnCls} bg-white`}
-          >
-            Edit
-          </button>
-        )}
+          )}
+        </div>
       </div>
 
-      <div className="flex gap-2 mt-4">
-        {draft.academicYears.map((year) => (
-          <button
-            key={year.year}
-            onClick={() => setActiveYear(year.year)}
-            className={`px-4 py-2 border-2 rounded ${
-              year.year === activeYear ? "bg-green-600 text-white" : "bg-white"
-            }`}
+      <div className="mt-6 space-y-5">
+        {active?.semesters.map((sem, semIdx) => (
+          <section
+            key={sem.semester}
+            className="rounded-xl border border-border bg-surface p-5 shadow-card"
           >
-            Year {year.year}
-          </button>
+            <header className="mb-4 flex items-center gap-2.5">
+              <span className="grid size-8 place-items-center rounded-lg bg-secondary font-display text-sm font-bold text-secondary-foreground">
+                {sem.semester}
+              </span>
+              <h3 className="font-display text-sm font-bold">
+                Semester {sem.semester}
+              </h3>
+            </header>
+            {sem.subjects.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No subjects yet.</p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border text-left text-xs uppercase tracking-wide text-muted-foreground">
+                      <th className="py-2 pr-4 font-medium">Subject</th>
+                      <th className="px-2 py-2 text-right font-medium">
+                        Internal 1
+                      </th>
+                      <th className="px-2 py-2 text-right font-medium">
+                        Internal 2
+                      </th>
+                      <th className="px-2 py-2 text-right font-medium">Final</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {sem.subjects.map((sub, subIdx) => {
+                      const examInput = (exam: Exam) => (
+                        <input
+                          type="number"
+                          aria-label={`${sub.subject || "Subject"} ${exam} marks`}
+                          value={sub[exam].marks}
+                          onChange={(e) =>
+                            patchSubject(semIdx, subIdx, {
+                              [exam]: { marks: Number(e.target.value) },
+                            })
+                          }
+                          className={`${inputCls} w-16 text-right`}
+                        />
+                      )
+                      return (
+                        <tr key={subIdx} className="border-b border-border/60 last:border-0">
+                          <td className="py-2 pr-4">
+                            {editing ? (
+                              <input
+                                type="text"
+                                aria-label="Subject name"
+                                value={sub.subject}
+                                onChange={(e) =>
+                                  patchSubject(semIdx, subIdx, {
+                                    subject: e.target.value,
+                                  })
+                                }
+                                className={`${inputCls} w-full`}
+                              />
+                            ) : (
+                              <span className="font-medium text-foreground">
+                                {sub.subject}
+                              </span>
+                            )}
+                          </td>
+                          <td className="px-2 py-2 text-right tabular-nums">
+                            {editing
+                              ? examInput("internal1")
+                              : sub.internal1.marks}
+                          </td>
+                          <td className="px-2 py-2 text-right tabular-nums">
+                            {editing
+                              ? examInput("internal2")
+                              : sub.internal2.marks}
+                          </td>
+                          <td className="px-2 py-2 text-right font-semibold tabular-nums">
+                            {editing ? examInput("final") : sub.final.marks}
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </section>
         ))}
       </div>
 
-      {active?.semesters.map((sem, semIdx) => (
-        <div key={sem.semester} className="mt-4 border-2 rounded p-4">
-          <h3 className="font-medium">Semester {sem.semester}</h3>
-          {sem.subjects.length === 0 ? (
-            <p className="text-sm text-gray-500">No subjects yet.</p>
-          ) : (
-            <table className="w-full text-sm mt-2">
-              <thead>
-                <tr className="text-left border-b-2">
-                  <th className="py-1">Subject</th>
-                  <th>Internal 1</th>
-                  <th>Internal 2</th>
-                  <th>Final</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sem.subjects.map((sub, subIdx) => {
-                  const examInput = (exam: Exam) => (
-                    <input
-                      type="number"
-                      value={sub[exam].marks}
-                      onChange={(e) =>
-                        patchSubject(semIdx, subIdx, {
-                          [exam]: { marks: Number(e.target.value) },
-                        })
-                      }
-                      className={`${inputCls} w-16`}
-                    />
-                  )
-                  return (
-                    <tr key={subIdx} className="border-b">
-                      <td className="py-1">
-                        {editing ? (
-                          <input
-                            type="text"
-                            value={sub.subject}
-                            onChange={(e) =>
-                              patchSubject(semIdx, subIdx, {
-                                subject: e.target.value,
-                              })
-                            }
-                            className={`${inputCls} w-full`}
-                          />
-                        ) : (
-                          sub.subject
-                        )}
-                      </td>
-                      <td>{editing ? examInput("internal1") : sub.internal1.marks}</td>
-                      <td>{editing ? examInput("internal2") : sub.internal2.marks}</td>
-                      <td>{editing ? examInput("final") : sub.final.marks}</td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          )}
-        </div>
-      ))}
-
       {!editing && active && <SemesterChart semesters={active.semesters} />}
-    </>
+    </div>
   )
 }

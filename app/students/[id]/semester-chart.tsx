@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { ChartBarIcon } from "@/app/components/icons"
+import { cn } from "@/lib/cn"
 
 type Subject = {
   subject: string
@@ -19,10 +21,10 @@ type ExamKey = "internal1" | "internal2" | "final"
 const W = 640
 const H = 300
 const PAD = { top: 20, right: 20, bottom: 60, left: 40 }
-const COLORS: Record<ExamKey, string> = {
-  internal1: "#f59e0b",
-  internal2: "#3b82f6",
-  final: "#10b981",
+const CHART_COLORS: Record<ExamKey, string> = {
+  internal1: "var(--chart-3)",
+  internal2: "var(--chart-1)",
+  final: "var(--chart-2)",
 }
 const EXAMS: { key: ExamKey; label: string }[] = [
   { key: "internal1", label: "Internal 1" },
@@ -46,27 +48,40 @@ export function SemesterChart({ semesters }: { semesters: Semester[] }) {
     n === 1 ? PAD.left + plotW / 2 : PAD.left + (i / (n - 1)) * plotW
   const y = (v: number) => PAD.top + plotH - (v / 100) * plotH
 
+  const axisText: React.CSSProperties = { fill: "var(--muted-foreground)" }
+
   return (
-    <div className="mt-4 border-2 rounded p-4">
-      <div className="flex gap-2">
-        {semesters.map((s, i) => (
-          <button
-            key={s.semester}
-            onClick={() => setSemIdx(i)}
-            className={`px-4 py-1 border-2 rounded ${
-              i === semIdx ? "bg-green-600 text-white" : "bg-white"
-            }`}
-          >
-            Semester {s.semester}
-          </button>
-        ))}
-      </div>
+    <section className="mt-6 rounded-xl border border-border bg-surface p-5 shadow-card">
+      <header className="mb-4 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <span className="grid size-8 place-items-center rounded-lg bg-secondary font-display text-sm font-bold text-secondary-foreground">
+            <ChartBarIcon className="size-4.5" />
+          </span>
+          <h3 className="font-display text-sm font-bold">Marks overview</h3>
+        </div>
+        <div className="flex items-center gap-1 rounded-lg border border-border bg-surface p-1">
+          {semesters.map((s, i) => (
+            <button
+              key={s.semester}
+              onClick={() => setSemIdx(i)}
+              className={cn(
+                "rounded-lg px-3 py-1 text-sm font-medium transition-colors",
+                i === semIdx
+                  ? "bg-primary text-primary-foreground shadow-card"
+                  : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"
+              )}
+            >
+              Sem {s.semester}
+            </button>
+          ))}
+        </div>
+      </header>
 
       {n === 0 ? (
-        <p className="text-sm text-gray-500 mt-4">No subjects to chart.</p>
+        <p className="text-sm text-muted-foreground">No subjects to chart.</p>
       ) : (
         <>
-          <svg viewBox={`0 0 ${W} ${H}`} className="w-full mt-4">
+          <svg viewBox={`0 0 ${W} ${H}`} className="w-full" aria-hidden="true">
             {[0, 20, 40, 60, 80, 100].map((v) => (
               <g key={v}>
                 <line
@@ -74,14 +89,14 @@ export function SemesterChart({ semesters }: { semesters: Semester[] }) {
                   y1={y(v)}
                   x2={W - PAD.right}
                   y2={y(v)}
-                  stroke="#e5e7eb"
+                  style={{ stroke: "var(--chart-grid)" }}
                 />
                 <text
                   x={PAD.left - 6}
                   y={y(v) + 3}
                   textAnchor="end"
                   fontSize="10"
-                  fill="#9ca3af"
+                  style={axisText}
                 >
                   {v}
                 </text>
@@ -94,7 +109,7 @@ export function SemesterChart({ semesters }: { semesters: Semester[] }) {
                     .map((s, i) => `${x(i)},${y(s[key].marks)}`)
                     .join(" ")}
                   fill="none"
-                  stroke={COLORS[key]}
+                  stroke={CHART_COLORS[key]}
                   strokeWidth={2}
                 />
                 {subjects.map((s, i) => (
@@ -103,7 +118,7 @@ export function SemesterChart({ semesters }: { semesters: Semester[] }) {
                     cx={x(i)}
                     cy={y(s[key].marks)}
                     r={3}
-                    fill={COLORS[key]}
+                    fill={CHART_COLORS[key]}
                   />
                 ))}
               </g>
@@ -115,18 +130,21 @@ export function SemesterChart({ semesters }: { semesters: Semester[] }) {
                 y={H - PAD.bottom + 14}
                 textAnchor="middle"
                 fontSize="10"
-                fill="#6b7280"
+                style={axisText}
               >
                 {truncate(s.subject, 14)}
               </text>
             ))}
           </svg>
-          <div className="flex gap-4 justify-center mt-2 text-sm">
+          <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm">
             {EXAMS.map(({ key, label }) => (
-              <span key={key} className="flex items-center gap-1">
+              <span
+                key={key}
+                className="flex items-center gap-1.5 text-muted-foreground"
+              >
                 <span
-                  className="inline-block w-3 h-3 rounded-full"
-                  style={{ backgroundColor: COLORS[key] }}
+                  className="inline-block size-2.5 rounded-full"
+                  style={{ backgroundColor: CHART_COLORS[key] }}
                 />
                 {label}
               </span>
@@ -134,6 +152,6 @@ export function SemesterChart({ semesters }: { semesters: Semester[] }) {
           </div>
         </>
       )}
-    </div>
+    </section>
   )
 }

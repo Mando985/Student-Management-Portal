@@ -2,6 +2,9 @@ import { ObjectId } from "mongodb"
 import Link from "next/link"
 import clientPromise from "@/lib/mongodb"
 import { StudentTabs, type Student } from "./student-tabs"
+import { SiteHeader } from "@/app/components/site-header"
+import { ArrowLeftIcon } from "@/app/components/icons"
+import { initials } from "@/lib/initials"
 
 export default async function StudentPage({
   params,
@@ -17,17 +20,44 @@ export default async function StudentPage({
 
   if (!student) return <p>Student not found.</p>
 
-  const { _id, ...data } = student as Student & { _id: ObjectId }
+  const data: Student = {
+    name: student.name,
+    branch: student.branch,
+    currentYear: student.currentYear,
+    academicYears: student.academicYears,
+  }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto relative">
-      <Link href="/" className="text-blue-600 underline">
-        Back
-      </Link>
-      <h1 className="text-2xl font-bold mt-4">{student.name}</h1>
-      <p>{student.branch}</p>
-      <p>Year {student.currentYear}</p>
-      <StudentTabs student={data} id={id} />
-    </div>
+    <>
+      <SiteHeader />
+      <main className="container-page py-8 sm:py-10">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeftIcon className="size-4" />
+          All students
+        </Link>
+
+        <header className="mt-5 flex items-center gap-4">
+          <span className="grid size-14 shrink-0 place-items-center rounded-2xl bg-primary font-display text-lg font-bold text-primary-foreground shadow-card">
+            {initials(student.name)}
+          </span>
+          <div className="min-w-0">
+            <h1 className="truncate text-2xl font-bold sm:text-3xl">
+              {student.name}
+            </h1>
+            <div className="mt-1.5 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+              <span className="truncate">{student.branch}</span>
+              <span className="rounded-full border border-border bg-surface px-2.5 py-0.5 text-xs font-medium">
+                Year {student.currentYear}
+              </span>
+            </div>
+          </div>
+        </header>
+
+        <StudentTabs student={data} id={id} />
+      </main>
+    </>
   )
 }

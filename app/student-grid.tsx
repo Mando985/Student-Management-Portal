@@ -5,6 +5,7 @@ import Link from "next/link"
 import { DeleteStudentButton } from "./delete-student-button"
 import { ArrowRightIcon } from "./components/icons"
 import { cn } from "@/lib/cn"
+import { initials } from "@/lib/initials"
 
 type Student = {
   _id: string
@@ -16,15 +17,6 @@ type Student = {
 export type { Student }
 
 const YEARS = [1, 2, 3, 4]
-
-function initials(name: string) {
-  return name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((w) => w[0].toUpperCase())
-    .join("")
-}
 
 export function StudentGrid({ students }: { students: Student[] }) {
   const [year, setYear] = useState<number | null>(null)
