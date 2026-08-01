@@ -1,0 +1,50 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link [ref=e4] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e9]:
+        - button "Add Student" [ref=e10]
+        - button "Switch to dark mode" [ref=e13]
+  - main [ref=e16]:
+    - generic [ref=e17]:
+      - paragraph [ref=e18]: Academic Records
+      - heading "Students" [level=1] [ref=e19]
+      - paragraph [ref=e20]: View and manage academic results for every student across all semesters.
+    - generic [ref=e21]:
+      - generic [ref=e22]:
+        - generic [ref=e23]:
+          - button "All" [ref=e24]
+          - button "Year 1" [ref=e25]
+          - button "Year 2" [ref=e26]
+          - button "Year 3" [ref=e27]
+          - button "Year 4" [ref=e28]
+        - paragraph [ref=e29]: Showing 2 of 2 students
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - link "View results for Rahul Sharma" [ref=e32] [cursor=pointer]:
+            - /url: /students/6a6d8ac2bc75a1ada29fcef8
+            - generic [ref=e33]: Rahul Sharma
+          - generic [ref=e34]:
+            - generic [ref=e35]: RS
+            - button "Delete student" [ref=e36]
+          - generic [ref=e40]:
+            - heading "Rahul Sharma" [level=2] [ref=e41]
+            - paragraph [ref=e42]: Computer Science and Engineering
+          - generic [ref=e43]:
+            - generic [ref=e44]: Year 2
+            - generic [ref=e45]: Results
+        - generic [ref=e48]:
+          - link "View results for Priya Patel" [ref=e49] [cursor=pointer]:
+            - /url: /students/6a6d94b07c77b85447a65a41
+            - generic [ref=e50]: Priya Patel
+          - generic [ref=e51]:
+            - generic [ref=e52]: PP
+            - button "Delete student" [ref=e53]
+          - generic [ref=e57]:
+            - heading "Priya Patel" [level=2] [ref=e58]
+            - paragraph [ref=e59]: Electronics and Communication Engineering
+          - generic [ref=e60]:
+            - generic [ref=e61]: Year 3
+            - generic [ref=e62]: Results
+  - button "Open Next.js Dev Tools" [ref=e70] [cursor=pointer]
