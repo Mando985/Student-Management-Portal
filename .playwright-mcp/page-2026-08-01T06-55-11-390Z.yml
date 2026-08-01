@@ -1,0 +1,28 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - link "Back" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - heading "Rahul Sharma" [level=1] [ref=e4]
+    - paragraph [ref=e5]: Computer Science and Engineering
+    - paragraph [ref=e6]: Year 2
+    - generic [ref=e7]:
+      - button "Year 1" [ref=e8]
+      - button "Year 2" [ref=e9]
+      - button "Year 3" [active] [ref=e10]
+      - button "Year 4" [ref=e11]
+    - generic [ref=e101]:
+      - heading "Semester 5" [level=3] [ref=e102]
+      - paragraph [ref=e103]: No subjects yet.
+    - generic [ref=e104]:
+      - heading "Semester 6" [level=3] [ref=e105]
+      - paragraph [ref=e106]: No subjects yet.
+  - generic [ref=e86] [cursor=pointer]:
+    - button "Open Next.js Dev Tools" [ref=e87]
+    - generic [ref=e91]:
+      - button "Open issues overlay" [ref=e92]:
+        - generic [ref=e93]:
+          - generic [ref=e94]: "0"
+          - generic [ref=e95]: "1"
+        - generic [ref=e96]: Issue
+      - button "Collapse issues badge" [ref=e97]
+  - alert [ref=e100]

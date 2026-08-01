@@ -1,0 +1,43 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - link "Back" [ref=e3] [cursor=pointer]:
+      - /url: /
+    - heading "Rahul Sharma" [level=1] [ref=e4]
+    - paragraph [ref=e5]: Computer Science and Engineering
+    - paragraph [ref=e6]: Year 2
+    - button "Edit" [ref=e216]
+    - generic [ref=e9]:
+      - button "Year 1" [ref=e10]
+      - button "Year 2" [ref=e11]
+      - button "Year 3" [ref=e12]
+      - button "Year 4" [ref=e13]
+    - generic [ref=e94]:
+      - heading "Semester 5" [level=3] [ref=e95]
+      - table [ref=e102]:
+        - rowgroup [ref=e103]:
+          - row [ref=e104]:
+            - columnheader "Subject" [ref=e105]
+            - columnheader "Internal 1" [ref=e106]
+            - columnheader "Internal 2" [ref=e107]
+            - columnheader "Final" [ref=e108]
+        - rowgroup [ref=e109]:
+          - row [ref=e217]:
+            - cell "Machine Learning" [ref=e209]
+            - cell "19" [ref=e210]
+            - cell "18" [ref=e211]
+            - cell "88" [ref=e218]
+          - row [ref=e212]:
+            - cell "Artificial Intelligence" [ref=e213]
+            - cell "0" [ref=e122]
+            - cell "0" [ref=e124]
+            - cell "0" [ref=e126]
+          - row [ref=e214]:
+            - cell "Deep Learning" [ref=e215]
+            - cell "0" [ref=e131]
+            - cell "0" [ref=e133]
+            - cell "0" [ref=e135]
+    - generic [ref=e97]:
+      - heading "Semester 6" [level=3] [ref=e98]
+      - paragraph [ref=e219]: No subjects yet.
+  - button "Open Next.js Dev Tools" [ref=e89] [cursor=pointer]
+  - alert [ref=e93]

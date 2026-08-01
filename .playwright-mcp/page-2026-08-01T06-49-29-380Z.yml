@@ -1,0 +1,17 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - paragraph [ref=e4]: Here goes the the top part
+    - generic [ref=e5]:
+      - button "Add Student" [ref=e6]
+      - generic [ref=e7]:
+        - link [ref=e8] [cursor=pointer]:
+          - /url: /students/6a6d8ac2bc75a1ada29fcef8
+          - heading "Rahul Sharma" [level=2] [ref=e9]
+          - paragraph [ref=e10]: Computer Science and Engineering
+          - paragraph [ref=e11]: Year 2
+        - link [ref=e12] [cursor=pointer]:
+          - /url: /students/6a6d94b07c77b85447a65a41
+          - heading "Priya Patel" [level=2] [ref=e13]
+          - paragraph [ref=e14]: Electronics and Communication Engineering
+          - paragraph [ref=e15]: Year 3
+  - button "Open Next.js Dev Tools" [ref=e21] [cursor=pointer]

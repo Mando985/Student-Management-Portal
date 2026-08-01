@@ -1,0 +1,169 @@
+- generic [active] [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e21] [cursor=pointer]
+  - alert [ref=e25]
+  - generic [ref=e26]:
+    - link "Back" [ref=e27] [cursor=pointer]:
+      - /url: /
+    - heading "Rahul Sharma" [level=1] [ref=e28]
+    - paragraph [ref=e29]: Computer Science and Engineering
+    - paragraph [ref=e30]: Year 2
+    - generic [ref=e31]:
+      - heading "Year 1" [level=2] [ref=e32]
+      - generic [ref=e33]:
+        - heading "Semester 1" [level=3] [ref=e34]
+        - table [ref=e35]:
+          - rowgroup [ref=e36]:
+            - row [ref=e37]:
+              - columnheader "Subject" [ref=e38]
+              - columnheader "Internal 1" [ref=e39]
+              - columnheader "Internal 2" [ref=e40]
+              - columnheader "Final" [ref=e41]
+          - rowgroup [ref=e42]:
+            - row [ref=e43]:
+              - cell "Mathematics I" [ref=e44]
+              - cell "18" [ref=e45]
+              - cell "19" [ref=e46]
+              - cell "85" [ref=e47]
+            - row [ref=e48]:
+              - cell "Physics" [ref=e49]
+              - cell "17" [ref=e50]
+              - cell "18" [ref=e51]
+              - cell "81" [ref=e52]
+            - row [ref=e53]:
+              - cell "Programming in C" [ref=e54]
+              - cell "20" [ref=e55]
+              - cell "19" [ref=e56]
+              - cell "90" [ref=e57]
+            - row [ref=e58]:
+              - cell "English" [ref=e59]
+              - cell "16" [ref=e60]
+              - cell "18" [ref=e61]
+              - cell "78" [ref=e62]
+            - row [ref=e63]:
+              - cell "Engineering Graphics" [ref=e64]
+              - cell "19" [ref=e65]
+              - cell "20" [ref=e66]
+              - cell "88" [ref=e67]
+      - generic [ref=e68]:
+        - heading "Semester 2" [level=3] [ref=e69]
+        - table [ref=e70]:
+          - rowgroup [ref=e71]:
+            - row [ref=e72]:
+              - columnheader "Subject" [ref=e73]
+              - columnheader "Internal 1" [ref=e74]
+              - columnheader "Internal 2" [ref=e75]
+              - columnheader "Final" [ref=e76]
+          - rowgroup [ref=e77]:
+            - row [ref=e78]:
+              - cell "Mathematics II" [ref=e79]
+              - cell "19" [ref=e80]
+              - cell "18" [ref=e81]
+              - cell "84" [ref=e82]
+            - row [ref=e83]:
+              - cell "Chemistry" [ref=e84]
+              - cell "17" [ref=e85]
+              - cell "19" [ref=e86]
+              - cell "80" [ref=e87]
+            - row [ref=e88]:
+              - cell "Data Structures" [ref=e89]
+              - cell "20" [ref=e90]
+              - cell "20" [ref=e91]
+              - cell "92" [ref=e92]
+            - row [ref=e93]:
+              - cell "Environmental Science" [ref=e94]
+              - cell "18" [ref=e95]
+              - cell "17" [ref=e96]
+              - cell "79" [ref=e97]
+            - row [ref=e98]:
+              - cell "Digital Electronics" [ref=e99]
+              - cell "19" [ref=e100]
+              - cell "18" [ref=e101]
+              - cell "86" [ref=e102]
+    - generic [ref=e103]:
+      - heading "Year 2" [level=2] [ref=e104]
+      - generic [ref=e105]:
+        - heading "Semester 3" [level=3] [ref=e106]
+        - table [ref=e107]:
+          - rowgroup [ref=e108]:
+            - row [ref=e109]:
+              - columnheader "Subject" [ref=e110]
+              - columnheader "Internal 1" [ref=e111]
+              - columnheader "Internal 2" [ref=e112]
+              - columnheader "Final" [ref=e113]
+          - rowgroup [ref=e114]:
+            - row [ref=e115]:
+              - cell "Database Management Systems" [ref=e116]
+              - cell "20" [ref=e117]
+              - cell "19" [ref=e118]
+              - cell "91" [ref=e119]
+            - row [ref=e120]:
+              - cell "Operating Systems" [ref=e121]
+              - cell "18" [ref=e122]
+              - cell "17" [ref=e123]
+              - cell "83" [ref=e124]
+            - row [ref=e125]:
+              - cell "Computer Networks" [ref=e126]
+              - cell "19" [ref=e127]
+              - cell "20" [ref=e128]
+              - cell "89" [ref=e129]
+            - row [ref=e130]:
+              - cell "Object Oriented Programming" [ref=e131]
+              - cell "20" [ref=e132]
+              - cell "18" [ref=e133]
+              - cell "90" [ref=e134]
+            - row [ref=e135]:
+              - cell "Discrete Mathematics" [ref=e136]
+              - cell "17" [ref=e137]
+              - cell "18" [ref=e138]
+              - cell "82" [ref=e139]
+      - generic [ref=e140]:
+        - heading "Semester 4" [level=3] [ref=e141]
+        - table [ref=e142]:
+          - rowgroup [ref=e143]:
+            - row [ref=e144]:
+              - columnheader "Subject" [ref=e145]
+              - columnheader "Internal 1" [ref=e146]
+              - columnheader "Internal 2" [ref=e147]
+              - columnheader "Final" [ref=e148]
+          - rowgroup [ref=e149]:
+            - row [ref=e150]:
+              - cell "Software Engineering" [ref=e151]
+              - cell "18" [ref=e152]
+              - cell "19" [ref=e153]
+              - cell "87" [ref=e154]
+            - row [ref=e155]:
+              - cell "Java Programming" [ref=e156]
+              - cell "20" [ref=e157]
+              - cell "20" [ref=e158]
+              - cell "94" [ref=e159]
+            - row [ref=e160]:
+              - cell "Microprocessors" [ref=e161]
+              - cell "18" [ref=e162]
+              - cell "17" [ref=e163]
+              - cell "81" [ref=e164]
+            - row [ref=e165]:
+              - cell "Theory of Computation" [ref=e166]
+              - cell "16" [ref=e167]
+              - cell "18" [ref=e168]
+              - cell "79" [ref=e169]
+            - row [ref=e170]:
+              - cell "Web Technologies" [ref=e171]
+              - cell "20" [ref=e172]
+              - cell "19" [ref=e173]
+              - cell "92" [ref=e174]
+    - generic [ref=e175]:
+      - heading "Year 3" [level=2] [ref=e176]
+      - generic [ref=e177]:
+        - heading "Semester 5" [level=3] [ref=e178]
+        - paragraph [ref=e179]: No subjects yet.
+      - generic [ref=e180]:
+        - heading "Semester 6" [level=3] [ref=e181]
+        - paragraph [ref=e182]: No subjects yet.
+    - generic [ref=e183]:
+      - heading "Year 4" [level=2] [ref=e184]
+      - generic [ref=e185]:
+        - heading "Semester 7" [level=3] [ref=e186]
+        - paragraph [ref=e187]: No subjects yet.
+      - generic [ref=e188]:
+        - heading "Semester 8" [level=3] [ref=e189]
+        - paragraph [ref=e190]: No subjects yet.
