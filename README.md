@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Student Management Portal
+
+A student result-management app: a single-page homepage plus per-student detail/edit views. Server-rendered pages with client components for interactivity, MongoDB for persistence.
+
+**Live demo:** https://student-management-portal-nine-pink.vercel.app?_vercel_share=j53YLglg5dtPYSljTH0To7Iz7saU5pYH
+
+## Features
+
+- Homepage with year filter and add/delete student forms
+- Per-student detail view with semester tabs, marks editing, and charts
+- Marks restricted to 0–100
+- Recharts-based semester charts
 
 ## Getting Started
 
-First, run the development server:
+Requires Node.js and a MongoDB URI.
 
 ```bash
+npm install
+# add MONGODB_URI to .env
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run dev` — dev server (Turbopack)
+- `npm run build` — production build (runs TypeScript typecheck)
+- `npm run lint` — eslint
 
-## Learn More
+## Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+- [Next.js](https://nextjs.org) (App Router, server actions)
+- MongoDB (via the official Node driver, `@/lib/mongodb` singleton)
+- React client components
+- [Recharts](https://recharts.org) for charts
+- Tailwind CSS v4
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `app/page.tsx` — homepage (server component)
+- `app/actions.ts` — server actions for CRUD
+- `app/students/[id]/` — detail/edit views
+- `components/ui/` — trimmed shadcn-style primitives
+- `lib/mongodb.ts` — DB connection

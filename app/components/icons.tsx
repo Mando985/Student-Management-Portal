@@ -99,5 +99,3 @@ export function ChartBarIcon({ className }: IconProps) {
     className
   )
 }
-
-

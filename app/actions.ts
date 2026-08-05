@@ -3,7 +3,7 @@
 import { revalidatePath, refresh } from "next/cache"
 import { ObjectId } from "mongodb"
 import clientPromise from "@/lib/mongodb"
-import type { Student } from "@/app/students/[id]/student-tabs"
+import type { Student } from "@/lib/types"
 
 export type AddStudentState = { success?: boolean; message?: string }
 

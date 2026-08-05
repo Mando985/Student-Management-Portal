@@ -19,7 +19,7 @@ Student result-management app: a single-page homepage plus per-student detail/ed
 
 - Requires `MONGODB_URI` in `.env` (already present). App connects via `@/lib/mongodb` `clientPromise` (global singleton in dev); it reads `process.env.MONGODB_URI!`.
 - DB name `students`, collection `students`. Document shape: `name`, `branch`, `currentYear` (1–4), `academicYears` (4 years × 2 semesters each, numbered `(year-1)*2+i` = 1–8, ≤5 subjects, each with `internal1/internal2/final` marks).
-- The `Student` type is defined and exported from `app/students/[id]/student-tabs.tsx`; reuse it rather than redefining.
+- The `Student` type is defined and exported from `lib/types.ts` (along with `Subject`/`Semester`); reuse it rather than redefining.
 
 ## Architecture
 

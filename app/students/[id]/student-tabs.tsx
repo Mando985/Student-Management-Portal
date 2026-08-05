@@ -5,24 +5,7 @@ import { updateStudent } from "@/app/actions"
 import { SemesterChart } from "./semester-chart"
 import { PencilIcon } from "@/app/components/icons"
 import { cn } from "@/lib/cn"
-
-export type Student = {
-  name: string
-  branch: string
-  currentYear: number
-  academicYears: {
-    year: number
-    semesters: {
-      semester: number
-      subjects: {
-        subject: string
-        internal1: { marks: number }
-        internal2: { marks: number }
-        final: { marks: number }
-      }[]
-    }[]
-  }[]
-}
+import type { Student } from "@/lib/types"
 
 type Exam = "internal1" | "internal2" | "final"
 

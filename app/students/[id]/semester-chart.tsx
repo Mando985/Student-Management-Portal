@@ -16,18 +16,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/area-charts-2"
 import { ChartBarIcon } from "@/app/components/icons"
-
-type Subject = {
-  subject: string
-  internal1: { marks: number }
-  internal2: { marks: number }
-  final: { marks: number }
-}
-
-export type Semester = {
-  semester: number
-  subjects: Subject[]
-}
+import type { Semester } from "@/lib/types"
 
 const chartConfig = {
   internal1: { label: "Internal 1", color: "var(--chart-3)" },

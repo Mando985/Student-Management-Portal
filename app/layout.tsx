@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Figtree, Noto_Sans } from "next/font/google";
-import { Analytics } from "@vercel/analytics/next"
 import "./globals.css";
 
 const figtree = Figtree({
@@ -38,9 +37,7 @@ try {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  
   return (
-    
     <html lang="en" className={`${figtree.variable} ${noto.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
