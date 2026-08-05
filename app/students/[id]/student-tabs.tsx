@@ -239,13 +239,18 @@ export function StudentTabs({ student, id }: { student: Student; id: string }) {
                               const examInput = (exam: Exam) => (
                                 <input
                                   type="number"
+                                  min={0}
+                                  max={100}
                                   aria-label={`${sub.subject || "Subject"} ${exam} marks`}
                                   value={sub[exam].marks}
-                                  onChange={(e) =>
+                                  onChange={(e) => {
+                                    const v = e.target.value
+                                    if (v === "") return patchSubject(safeSemIdx, subIdx, { [exam]: { marks: 0 } })
+                                    const clamped = Math.min(100, Math.max(0, Number(v)))
                                     patchSubject(safeSemIdx, subIdx, {
-                                      [exam]: { marks: Number(e.target.value) },
+                                      [exam]: { marks: clamped },
                                     })
-                                  }
+                                  }}
                                   className={`${inputCls} w-16 text-right`}
                                 />
                               )
